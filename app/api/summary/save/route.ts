@@ -7,8 +7,15 @@ export async function POST(req: NextRequest) {
 
     const summary = await db.summary.create({
       data: {
+        title: body.title || "Summary",
         content: body.content,
-        pdfId: body.pdfId,
+        type: body.type || "General",
+
+        pdf: {
+          connect: {
+            id: body.pdfId,
+          },
+        },
       },
     });
 
