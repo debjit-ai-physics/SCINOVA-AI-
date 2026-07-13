@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./scinova.db"
+}
+
+model PDF {
+  id        String   @id @default(cuid())
+
+  title     String
+
+  filename  String
+
+  filepath  String
+
+  pages      Int
+
+  extractedText String?
+
+  createdAt DateTime @default(now())
+
+  chats      Chat[]
+
+  notes      Note[]
+
+  summaries  Summary[]
+
+  quizzes    Quiz[]
+
+  flashcards Flashcard[]
+}
+
+model Chat {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String
+
+  pdfId String
+  pdf   PDF @relation(fields: [pdfId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Summary {
+  id        String   @id @default(cuid())
+
+  title     String
+
+  content   String
+
+  type      String
+
+  createdAt DateTime @default(now())
+
+  pdfId      String
+
+  pdf        PDF @relation(fields: [pdfId], references: [id], onDelete: Cascade)
+}
+model Note {
+  id        String   @id @default(cuid())
+  content   String
+
+  pdfId String
+  pdf   PDF @relation(fields: [pdfId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Quiz {
+  id        String   @id @default(cuid())
+  content   String
+
+  pdfId String
+  pdf   PDF @relation(fields: [pdfId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+model Flashcard {
+  id        String   @id @default(cuid())
+
+  question  String
+
+  answer    String
+
+  createdAt DateTime @default(now())
+
+  pdfId      String
+
+  pdf        PDF @relation(fields: [pdfId], references: [id], onDelete: Cascade)
+}
