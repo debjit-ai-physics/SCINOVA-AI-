@@ -20,18 +20,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Save PDF
+    // Upload PDF to Vercel Blob
     const saved = await savePDF(file);
 
-    // Extract text
+    // Extract text from the uploaded PDF
     const pdf = await extractText(file);
 
-    // Save PDF + extracted text
+    // Save metadata in PostgreSQL
     const document = await db.pDF.create({
       data: {
         title: file.name.replace(".pdf", ""),
         filename: saved.filename,
-        filepath: saved.filepath,
+        filepath: saved.filepath, // Blob URL
         pages: pdf.pages,
         extractedText: pdf.text,
       },
@@ -41,6 +41,7 @@ export async function POST(req: NextRequest) {
       success: true,
       pdfId: document.id,
       filename: document.filename,
+      fileUrl: document.filepath,
       pages: pdf.pages,
       preview: pdf.text.slice(0, 500),
     });

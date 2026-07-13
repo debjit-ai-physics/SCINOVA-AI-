@@ -1,34 +1,17 @@
-import fs from "fs";
-import path from "path";
+import { put } from "@vercel/blob";
 
-export async function savePDF(
-  file: File
-) {
-  const bytes = await file.arrayBuffer();
-
-  const buffer = Buffer.from(bytes);
-
-  const uploadDir = path.join(
-    process.cwd(),
-    "uploads"
+export async function savePDF(file: File) {
+  const blob = await put(
+    `pdfs/${Date.now()}-${file.name}`,
+    file,
+    {
+      access: "public",
+      addRandomSuffix: true,
+    }
   );
-
-  if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
-  }
-
-  const filename =
-    Date.now() + "_" + file.name;
-
-  const filepath = path.join(
-    uploadDir,
-    filename
-  );
-
-  fs.writeFileSync(filepath, buffer);
 
   return {
-    filename,
-    filepath,
+    filename: file.name,
+    filepath: blob.url,
   };
 }
