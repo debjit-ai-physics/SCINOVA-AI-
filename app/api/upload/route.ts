@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
+import { auth } from "@clerk/nextjs/server";
 import { savePDF } from "@/lib/storage";
 import { extractText } from "@/lib/pdf";
 import { db } from "@/lib/db";
@@ -7,6 +7,17 @@ import { db } from "@/lib/db";
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
+    const { userId } = await auth();
+
+if (!userId) {
+  return NextResponse.json(
+    {
+      success: false,
+      error: "Unauthorized",
+    },
+    { status: 401 }
+  );
+}
 
     const file = formData.get("file") as File;
 
@@ -28,15 +39,15 @@ export async function POST(req: NextRequest) {
 
     // Save metadata in PostgreSQL
     const document = await db.pDF.create({
-      data: {
-        title: file.name.replace(".pdf", ""),
-        filename: saved.filename,
-        filepath: saved.filepath, // Blob URL
-        pages: pdf.pages,
-        extractedText: pdf.text,
-      },
-    });
-
+  data: {
+    title: file.name.replace(".pdf", ""),
+    filename: saved.filename,
+    filepath: saved.filepath,
+    pages: pdf.pages,
+    extractedText: pdf.text,
+    userId,
+  },
+});
     return NextResponse.json({
       success: true,
       pdfId: document.id,

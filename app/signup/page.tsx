@@ -1,9 +1,9 @@
-import SignupForm from "@/components/auth/SignupForm";
+import { SignUp } from "@clerk/nextjs";
 
 export default function SignupPage() {
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 to-cyan-950">
-      <SignupForm />
+    <main className="min-h-screen flex items-center justify-center bg-slate-950">
+      <SignUp routing="hash" />
     </main>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import Sidebar from "./Sidebar";
-import Navbar from "./Navbar";
+import Topbar from "./Topbar";
 
 export default function AppLayout({
   children,
@@ -9,13 +9,20 @@ export default function AppLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
-      <Sidebar />
-      <Navbar />
+    <div className="bg-slate-950 text-white">
 
-      <main className="ml-72 pt-24 p-10">
-        {children}
-      </main>
-    </>
+      <Sidebar />
+
+      <div className="ml-72 min-h-screen">
+
+        <Topbar />
+
+        <main className="pt-24 p-8">
+          {children}
+        </main>
+
+      </div>
+
+    </div>
   );
 }

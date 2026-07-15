@@ -1,9 +1,25 @@
 import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 import { db } from "@/lib/db";
 
 export async function GET() {
   try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return NextResponse.json(
+        {
+          success: false,
+          pdfs: [],
+        },
+        { status: 401 }
+      );
+    }
+
     const pdfs = await db.pDF.findMany({
+      where: {
+        userId,
+      },
       orderBy: {
         createdAt: "desc",
       },
@@ -21,9 +37,7 @@ export async function GET() {
         success: false,
         pdfs: [],
       },
-      {
-        status: 500,
-      }
+      { status: 500 }
     );
   }
 }

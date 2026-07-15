@@ -77,7 +77,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-72 h-screen bg-slate-950 border-r border-slate-800 flex flex-col">
+    <aside className="fixed left-0 top-0 w-72 h-screen bg-slate-950 border-r border-slate-800 flex flex-col z-50">
       <div className="px-6 py-8 border-b border-slate-800">
         <h1 className="text-3xl font-bold text-cyan-400">
           SciNova AI
