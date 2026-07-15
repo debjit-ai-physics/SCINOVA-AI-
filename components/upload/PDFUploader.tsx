@@ -20,6 +20,10 @@ export default function PDFUploader() {
     });
 
     const data = await response.json();
+    // Save the uploaded PDF ID
+if (data.success) {
+  localStorage.setItem("pdfId", data.pdfId);
+}
 
     console.log(data);
   } catch (err) {

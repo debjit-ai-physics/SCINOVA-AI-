@@ -15,8 +15,9 @@ export default function ChatWindow() {
 
   const [loading, setLoading] =
     useState(false);
-
+  
   async function send(question: string) {
+    const pdfId = localStorage.getItem("pdfId");
     addMessage({
       role: "user",
       content: question,
@@ -35,9 +36,9 @@ export default function ChatWindow() {
         },
 
         body: JSON.stringify({
-          pdf: "",
+          pdfId,
           question,
-        }),
+        })
       }
     );
 

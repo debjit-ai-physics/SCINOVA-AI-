@@ -27,6 +27,16 @@ export default function Hero() {
             SciNova AI
           </span>
         </motion.h1>
+        <p className="mt-4 text-sm text-slate-300">
+Developed by
+<span className="font-semibold text-cyan-400">
+ Debjit Deb
+</span>
+{" & "}
+<span className="font-semibold text-purple-400">
+ Tanmoy Saha
+</span>
+</p>
 
         <motion.p
           initial={{ opacity: 0 }}
